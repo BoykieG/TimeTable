@@ -2,14 +2,14 @@ package cz.uhk.timetable.gui;
 
 import cz.uhk.timetable.model.LocationTimetable;
 import cz.uhk.timetable.utils.ITimetableProvider;
-import cz.uhk.timetable.utils.MockTimetableProvider;
+import cz.uhk.timetable.utils.StagTimetableProvider;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 
 public class TimetableFrame extends JFrame {
-    private ITimetableProvider timetableProvider = new MockTimetableProvider();
+    private ITimetableProvider timetableProvider = new StagTimetableProvider();
     private LocationTimetable timetable;
     private JTable tabTimetable;
     private TimetableModel timetableModel;
@@ -35,6 +35,16 @@ public class TimetableFrame extends JFrame {
 
     class TimetableModel extends AbstractTableModel {
 
+        private static final String[] COLNAMES = {
+                "ZKRATKA",
+                "NÁZEV",
+                "UČITEL",
+                "TYP",
+                "DEN",
+                "ZAČÁTEK",
+                "KONEC"
+        };
+
         @Override
         public int getRowCount() {
             return timetable.getActivities().size();
@@ -46,18 +56,23 @@ public class TimetableFrame extends JFrame {
         }
 
         @Override
+        public String getColumnName(int column) {
+            return COLNAMES[column];
+        }
+
+        @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             var a = timetable.getActivities().get(rowIndex);
-            switch (columnIndex) {
-                case 0 : return a.getId();
-                case 1 : return a.getName();
-                case 2 : return a.getTeacher();
-                case 3 : return a.getType();
-                case 4 : return a.getDay();
-                case 5 : return a.getStart();
-                case 6 : return a.getEnd();
-            }
-            return "";
+            return switch (columnIndex) {
+                case 0 -> a.getId();
+                case 1 -> a.getName();
+                case 2 -> a.getTeacher();
+                case 3 -> a.getType();
+                case 4 -> a.getDay();
+                case 5 -> a.getStart();
+                case 6 -> a.getEnd();
+                default -> "";
+            };
         }
     }
 }

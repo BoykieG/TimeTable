@@ -1,19 +1,30 @@
 package cz.uhk.timetable.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.LocalTime;
 
 /**
  * POJO Timetable activity
  */
 public class Activity {
+
     /** Module abbreviation, i.e. ZMAT2, PRO1, etc. */
+    @SerializedName("predmet")
     private String id;
     /** Full name of the module */
+    @SerializedName("nazev")
     private String name;
+    @SerializedName("vsichniUciteleJmenaTituly")
     private String teacher;
+    @SerializedName("den")
     private String day;
+    @SerializedName("typAkce")
     private String type;
-    private LocalTime start, end;
+    @SerializedName("hodinaSkutOd")
+    private LocalTime start;
+    @SerializedName("hodinaSkutDo")
+    private LocalTime end;
 
     public Activity() {
     }
@@ -97,3 +108,4 @@ public class Activity {
                 '}';
     }
 }
+
