@@ -11,7 +11,7 @@ import java.net.URL;
 import java.time.LocalTime;
 
 public class StagTimetableProvider implements ITimetableProvider {
-    private static final String STAG_URL = "https://stag-demo.uhk.cz/ws/services/rest2/rozvrhy/getRozvrhByMistnost?semestr=LS&budova=%s&mistnost=%s&outputFormat=JSON";
+    private static final String STAG_URL = "https://stag-demo.uhk.cz/ws/services/rest2/rozvrhy/getRozvrhByMistnost?semestr=%%25&budova=%s&mistnost=%s&outputFormat=JSON";
     private final Gson gson;
 
     public StagTimetableProvider() {
@@ -27,7 +27,10 @@ public class StagTimetableProvider implements ITimetableProvider {
             var url = new URL(STAG_URL.formatted(building, room));
             var reader = new InputStreamReader(url.openStream());
 
-            return gson.fromJson(reader, LocationTimetable.class);
+            LocationTimetable lt = gson.fromJson(reader, LocationTimetable.class);
+            lt.setBuilding(building);
+            lt.setRoom(room);
+            return lt;
 
         } catch (MalformedURLException exception) {
             System.out.println("Wrong URL!");

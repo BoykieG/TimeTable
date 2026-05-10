@@ -10,7 +10,7 @@ import java.time.LocalTime;
 public class LocalTimeAdapter extends TypeAdapter<LocalTime> {
     @Override
     public void write(JsonWriter out, LocalTime value) throws IOException {
-
+        out.value(value != null ? value.toString() : null);
     }
 
     @Override
@@ -19,6 +19,6 @@ public class LocalTimeAdapter extends TypeAdapter<LocalTime> {
         in.nextName();
         var timeStr = in.nextString();
         in.endObject();
-        return LocalTime.parse(timeStr); //TODO zkontrolovat
+        return LocalTime.parse(timeStr, java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
     }
 }
